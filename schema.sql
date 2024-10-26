@@ -152,3 +152,5 @@ CREATE TABLE "Payment" (
   "status" payment_status,
   "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
 );
+
+-- test
