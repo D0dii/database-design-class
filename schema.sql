@@ -69,7 +69,7 @@ CREATE TABLE "Student" (
   "address" VARCHAR,
   "gender" VARCHAR CHECK (gender IN ('male', 'female')),
   "student_number" INTEGER CHECK (student_number > 0),
-  "status" student_status,
+  "status" student_status DEFAULT 'active',
   "email" VARCHAR NOT NULL CHECK (email ~ '^[^@]+@[^@]+\.[^@]+$'),
   "password" VARCHAR NOT NULL,
   "phone_number" VARCHAR
@@ -103,7 +103,7 @@ CREATE TABLE "Equipment" (
 CREATE TABLE "FaultReport" (
   "id" SERIAL PRIMARY KEY,
   "report_date" DATE NOT NULL CHECK (report_date <= CURRENT_DATE),
-  "status" report_status,
+  "status" report_status DEFAULT 'submitted',
   "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT,
   "equipment_id" INTEGER REFERENCES "Equipment" ("id") ON DELETE RESTRICT
 );
@@ -138,7 +138,7 @@ CREATE TABLE "EmploymentContract" (
 CREATE TABLE "Application" (
   "id" SERIAL PRIMARY KEY,
   "submission_date" DATE NOT NULL CHECK (submission_date <= CURRENT_DATE),
-  "status" application_status,
+  "status" application_status DEFAULT 'registered',
   "income" FLOAT CHECK (income >= 0),
   "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
 );
@@ -148,6 +148,6 @@ CREATE TABLE "Payment" (
   "id" SERIAL PRIMARY KEY,
   "value" FLOAT NOT NULL CHECK (value > 0),
   "type" VARCHAR,
-  "status" payment_status,
+  "status" payment_status DEFAULT 'pending',
   "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
 );
