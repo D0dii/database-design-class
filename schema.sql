@@ -129,7 +129,7 @@ CREATE TABLE "EmploymentContract" (
   "contract_type" VARCHAR,
   "work_hours" INTEGER CHECK (work_hours >= 0),
   "salary" FLOAT CHECK (salary >= 0),
-  "employee_id" INTEGER REFERENCES "Employee" ("id") ON DELETE CASCADE,
+  "employee_id" INTEGER REFERENCES "Employee" ("id") ON DELETE RESTRICT,
   "position_id" INTEGER REFERENCES "Position" ("id") ON DELETE RESTRICT,
   "dormitory_id" INTEGER REFERENCES "Dormitory" ("id") ON DELETE RESTRICT
 );
