@@ -10,7 +10,7 @@ CREATE TYPE "report_status" AS ENUM (
   'completed'
 );
 
-CREATE TYPE "application_status" AS ENUM (
+CREATE TYPE "student_application_status" AS ENUM (
   'registered',
   'ready for review',
   'approved',
@@ -134,11 +134,11 @@ CREATE TABLE "EmploymentContract" (
   "dormitory_id" INTEGER REFERENCES "Dormitory" ("id") ON DELETE RESTRICT
 );
 
--- Application Table
-CREATE TABLE "Application" (
+-- StudentApplication Table
+CREATE TABLE "StudentApplication" (
   "id" SERIAL PRIMARY KEY,
   "submission_date" DATE NOT NULL CHECK (submission_date <= CURRENT_DATE),
-  "status" application_status DEFAULT 'registered',
+  "status" student_application_status DEFAULT 'registered',
   "income" FLOAT CHECK (income >= 0),
   "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
 );
