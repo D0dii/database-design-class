@@ -1,0 +1,968 @@
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "prevId": "",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "public.Regulations": {
+      "name": "Regulations",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "content": {
+          "name": "content",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.Dormitories": {
+      "name": "Dormitories",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "regulation_id": {
+          "name": "regulation_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Dormitories_regulation_id_fkey": {
+          "name": "Dormitories_regulation_id_fkey",
+          "tableFrom": "Dormitories",
+          "tableTo": "Regulations",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "regulation_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.Rooms": {
+      "name": "Rooms",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "number": {
+          "name": "number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "max_capacity": {
+          "name": "max_capacity",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "room_status": {
+          "name": "room_status",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dormitory_id": {
+          "name": "dormitory_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Rooms_dormitory_id_fkey": {
+          "name": "Rooms_dormitory_id_fkey",
+          "tableFrom": "Rooms",
+          "tableTo": "Dormitories",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "dormitory_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "Rooms_number_check": {
+          "name": "Rooms_number_check",
+          "value": "number > 0"
+        },
+        "Rooms_max_capacity_check": {
+          "name": "Rooms_max_capacity_check",
+          "value": "max_capacity > 0"
+        }
+      }
+    },
+    "public.EquipmentCategories": {
+      "name": "EquipmentCategories",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.Equipment": {
+      "name": "Equipment",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "purchase_date": {
+          "name": "purchase_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "condition": {
+          "name": "condition",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "category_id": {
+          "name": "category_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "room_id": {
+          "name": "room_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Equipment_category_id_fkey": {
+          "name": "Equipment_category_id_fkey",
+          "tableFrom": "Equipment",
+          "tableTo": "EquipmentCategories",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "category_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "Equipment_room_id_fkey": {
+          "name": "Equipment_room_id_fkey",
+          "tableFrom": "Equipment",
+          "tableTo": "Rooms",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "room_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "Equipment_purchase_date_check": {
+          "name": "Equipment_purchase_date_check",
+          "value": "purchase_date <= CURRENT_DATE"
+        }
+      }
+    },
+    "public.Students": {
+      "name": "Students",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pesel": {
+          "name": "pesel",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_of_birth": {
+          "name": "date_of_birth",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "student_number": {
+          "name": "student_number",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "student_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'active'"
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "Students_date_of_birth_check": {
+          "name": "Students_date_of_birth_check",
+          "value": "date_of_birth <= CURRENT_DATE"
+        },
+        "Students_gender_check": {
+          "name": "Students_gender_check",
+          "value": "(gender)::text = ANY ((ARRAY['male'::character varying, 'female'::character varying])::text[])"
+        },
+        "Students_student_number_check": {
+          "name": "Students_student_number_check",
+          "value": "student_number > 0"
+        },
+        "Students_email_check": {
+          "name": "Students_email_check",
+          "value": "(email)::text ~ '^[^@]+@[^@]+\\.[^@]+$'::text"
+        }
+      }
+    },
+    "public.FaultReports": {
+      "name": "FaultReports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "report_date": {
+          "name": "report_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "report_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'submitted'"
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "equipment_id": {
+          "name": "equipment_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "FaultReports_student_id_fkey": {
+          "name": "FaultReports_student_id_fkey",
+          "tableFrom": "FaultReports",
+          "tableTo": "Students",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "FaultReports_equipment_id_fkey": {
+          "name": "FaultReports_equipment_id_fkey",
+          "tableFrom": "FaultReports",
+          "tableTo": "Equipment",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "equipment_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "FaultReports_report_date_check": {
+          "name": "FaultReports_report_date_check",
+          "value": "report_date <= CURRENT_DATE"
+        }
+      }
+    },
+    "public.Employees": {
+      "name": "Employees",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "last_name": {
+          "name": "last_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "first_name": {
+          "name": "first_name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "pesel": {
+          "name": "pesel",
+          "type": "varchar(11)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "date_of_birth": {
+          "name": "date_of_birth",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "address": {
+          "name": "address",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "gender": {
+          "name": "gender",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "phone_number": {
+          "name": "phone_number",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "Employees_date_of_birth_check": {
+          "name": "Employees_date_of_birth_check",
+          "value": "date_of_birth <= CURRENT_DATE"
+        },
+        "Employees_gender_check": {
+          "name": "Employees_gender_check",
+          "value": "(gender)::text = ANY ((ARRAY['male'::character varying, 'female'::character varying])::text[])"
+        },
+        "Employees_email_check": {
+          "name": "Employees_email_check",
+          "value": "(email)::text ~ '^[^@]+@[^@]+\\.[^@]+$'::text"
+        }
+      }
+    },
+    "public.RentalAgreements": {
+      "name": "RentalAgreements",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "contract_date": {
+          "name": "contract_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "termination_date": {
+          "name": "termination_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "payment": {
+          "name": "payment",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "employee_id": {
+          "name": "employee_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dormitory_id": {
+          "name": "dormitory_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "room_id": {
+          "name": "room_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "RentalAgreements_employee_id_fkey": {
+          "name": "RentalAgreements_employee_id_fkey",
+          "tableFrom": "RentalAgreements",
+          "tableTo": "Employees",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "employee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "RentalAgreements_dormitory_id_fkey": {
+          "name": "RentalAgreements_dormitory_id_fkey",
+          "tableFrom": "RentalAgreements",
+          "tableTo": "Dormitories",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "dormitory_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "RentalAgreements_student_id_fkey": {
+          "name": "RentalAgreements_student_id_fkey",
+          "tableFrom": "RentalAgreements",
+          "tableTo": "Students",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "RentalAgreements_room_id_fkey": {
+          "name": "RentalAgreements_room_id_fkey",
+          "tableFrom": "RentalAgreements",
+          "tableTo": "Rooms",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "room_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "RentalAgreements_contract_date_check": {
+          "name": "RentalAgreements_contract_date_check",
+          "value": "contract_date <= CURRENT_DATE"
+        },
+        "RentalAgreements_payment_check": {
+          "name": "RentalAgreements_payment_check",
+          "value": "payment >= (0)::double precision"
+        }
+      }
+    },
+    "public.EmploymentContracts": {
+      "name": "EmploymentContracts",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "hire_date": {
+          "name": "hire_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "termination_date": {
+          "name": "termination_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "duration": {
+          "name": "duration",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "contract_type": {
+          "name": "contract_type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "work_hours": {
+          "name": "work_hours",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "salary": {
+          "name": "salary",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "employee_id": {
+          "name": "employee_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "position_id": {
+          "name": "position_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "dormitory_id": {
+          "name": "dormitory_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "EmploymentContracts_employee_id_fkey": {
+          "name": "EmploymentContracts_employee_id_fkey",
+          "tableFrom": "EmploymentContracts",
+          "tableTo": "Employees",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "employee_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "EmploymentContracts_position_id_fkey": {
+          "name": "EmploymentContracts_position_id_fkey",
+          "tableFrom": "EmploymentContracts",
+          "tableTo": "Positions",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "position_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        },
+        "EmploymentContracts_dormitory_id_fkey": {
+          "name": "EmploymentContracts_dormitory_id_fkey",
+          "tableFrom": "EmploymentContracts",
+          "tableTo": "Dormitories",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "dormitory_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "EmploymentContracts_hire_date_check": {
+          "name": "EmploymentContracts_hire_date_check",
+          "value": "hire_date <= CURRENT_DATE"
+        },
+        "EmploymentContracts_work_hours_check": {
+          "name": "EmploymentContracts_work_hours_check",
+          "value": "work_hours >= 0"
+        },
+        "EmploymentContracts_salary_check": {
+          "name": "EmploymentContracts_salary_check",
+          "value": "salary >= (0)::double precision"
+        }
+      }
+    },
+    "public.Positions": {
+      "name": "Positions",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "responsibilities": {
+          "name": "responsibilities",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {}
+    },
+    "public.StudentApplications": {
+      "name": "StudentApplications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "submission_date": {
+          "name": "submission_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "status": {
+          "name": "status",
+          "type": "student_application_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'registered'"
+        },
+        "income": {
+          "name": "income",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "StudentApplications_student_id_fkey": {
+          "name": "StudentApplications_student_id_fkey",
+          "tableFrom": "StudentApplications",
+          "tableTo": "Students",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "StudentApplications_submission_date_check": {
+          "name": "StudentApplications_submission_date_check",
+          "value": "submission_date <= CURRENT_DATE"
+        },
+        "StudentApplications_income_check": {
+          "name": "StudentApplications_income_check",
+          "value": "income >= (0)::double precision"
+        }
+      }
+    },
+    "public.Payments": {
+      "name": "Payments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "value": {
+          "name": "value",
+          "type": "double precision",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "type": {
+          "name": "type",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "payment_status",
+          "typeSchema": "public",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "student_id": {
+          "name": "student_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "Payments_student_id_fkey": {
+          "name": "Payments_student_id_fkey",
+          "tableFrom": "Payments",
+          "tableTo": "Students",
+          "schemaTo": "public",
+          "columnsFrom": [
+            "student_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "restrict",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "Payments_value_check": {
+          "name": "Payments_value_check",
+          "value": "value > (0)::double precision"
+        }
+      }
+    }
+  },
+  "enums": {
+    "public.payment_status": {
+      "name": "payment_status",
+      "values": [
+        "pending",
+        "in processing",
+        "posted",
+        "overdue"
+      ],
+      "schema": "public"
+    },
+    "public.report_status": {
+      "name": "report_status",
+      "values": [
+        "submitted",
+        "in repair",
+        "completed"
+      ],
+      "schema": "public"
+    },
+    "public.student_application_status": {
+      "name": "student_application_status",
+      "values": [
+        "registered",
+        "ready for review",
+        "approved",
+        "rejected"
+      ],
+      "schema": "public"
+    },
+    "public.student_status": {
+      "name": "student_status",
+      "values": [
+        "active",
+        "inactive"
+      ],
+      "schema": "public"
+    }
+  },
+  "schemas": {},
+  "sequences": {},
+  "views": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "tables": {}
+  }
+}
