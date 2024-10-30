@@ -81,7 +81,8 @@ CREATE TABLE "Rooms" (
   "number" INTEGER NOT NULL CHECK (number > 0),
   "max_capacity" INTEGER NOT NULL CHECK (max_capacity > 0),
   "room_status" VARCHAR,
-  "dormitory_id" INTEGER REFERENCES "Dormitories" ("id") ON DELETE RESTRICT
+  "dormitory_id" INTEGER REFERENCES "Dormitories" ("id") ON DELETE RESTRICT,
+  UNIQUE ("number", "dormitory_id")
 );
 
 -- EquipmentCategories Table
