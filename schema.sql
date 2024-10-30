@@ -24,29 +24,29 @@ CREATE TYPE "payment_status" AS ENUM (
   'overdue'
 );
 
--- Regulation Table
-CREATE TABLE "Regulation" (
+-- Regulations Table
+CREATE TABLE "Regulations" (
   "id" SERIAL PRIMARY KEY,
   "content" VARCHAR
 );
 
--- Dormitory Table
-CREATE TABLE "Dormitory" (
+-- Dormitories Table
+CREATE TABLE "Dormitories" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR NOT NULL,
   "address" VARCHAR,
-  "regulation_id" INTEGER REFERENCES "Regulation" ("id") ON DELETE RESTRICT
+  "regulation_id" INTEGER REFERENCES "Regulations" ("id") ON DELETE RESTRICT
 );
 
--- Position Table
-CREATE TABLE "Position" (
+-- Positions Table
+CREATE TABLE "Positions" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR NOT NULL,
   "responsibilities" VARCHAR
 );
 
--- Employee Table
-CREATE TABLE "Employee" (
+-- Employees Table
+CREATE TABLE "Employees" (
   "id" SERIAL PRIMARY KEY,
   "last_name" VARCHAR NOT NULL,
   "first_name" VARCHAR NOT NULL,
@@ -59,8 +59,8 @@ CREATE TABLE "Employee" (
   "phone_number" VARCHAR
 );
 
--- Student Table
-CREATE TABLE "Student" (
+-- Students Table
+CREATE TABLE "Students" (
   "id" SERIAL PRIMARY KEY,
   "last_name" VARCHAR NOT NULL,
   "first_name" VARCHAR NOT NULL,
@@ -75,17 +75,17 @@ CREATE TABLE "Student" (
   "phone_number" VARCHAR
 );
 
--- Room Table
-CREATE TABLE "Room" (
+-- Rooms Table
+CREATE TABLE "Rooms" (
   "id" SERIAL PRIMARY KEY,
   "number" INTEGER NOT NULL CHECK (number > 0),
   "max_capacity" INTEGER NOT NULL CHECK (max_capacity > 0),
   "room_status" VARCHAR,
-  "dormitory_id" INTEGER REFERENCES "Dormitory" ("id") ON DELETE RESTRICT
+  "dormitory_id" INTEGER REFERENCES "Dormitories" ("id") ON DELETE RESTRICT
 );
 
--- Equipment Category Table
-CREATE TABLE "EquipmentCategory" (
+-- EquipmentCategories Table
+CREATE TABLE "EquipmentCategories" (
   "id" SERIAL PRIMARY KEY,
   "name" VARCHAR NOT NULL
 );
@@ -95,33 +95,33 @@ CREATE TABLE "Equipment" (
   "id" SERIAL PRIMARY KEY,
   "purchase_date" DATE NOT NULL CHECK (purchase_date <= CURRENT_DATE),
   "condition" VARCHAR,
-  "category_id" INTEGER REFERENCES "EquipmentCategory" ("id") ON DELETE RESTRICT,
-  "room_id" INTEGER REFERENCES "Room" ("id") ON DELETE RESTRICT
+  "category_id" INTEGER REFERENCES "EquipmentCategories" ("id") ON DELETE RESTRICT,
+  "room_id" INTEGER REFERENCES "Rooms" ("id") ON DELETE RESTRICT
 );
 
--- Fault Report Table
-CREATE TABLE "FaultReport" (
+-- FaultReports Table
+CREATE TABLE "FaultReports" (
   "id" SERIAL PRIMARY KEY,
   "report_date" DATE NOT NULL CHECK (report_date <= CURRENT_DATE),
   "status" report_status DEFAULT 'submitted',
-  "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT,
+  "student_id" INTEGER REFERENCES "Students" ("id") ON DELETE RESTRICT,
   "equipment_id" INTEGER REFERENCES "Equipment" ("id") ON DELETE RESTRICT
 );
 
--- Rental Agreement Table
-CREATE TABLE "RentalAgreement" (
+-- RentalAgreements Table
+CREATE TABLE "RentalAgreements" (
   "id" SERIAL PRIMARY KEY,
   "contract_date" DATE NOT NULL CHECK (contract_date <= CURRENT_DATE),
   "termination_date" DATE,
   "payment" FLOAT NOT NULL CHECK (payment >= 0),
-  "employee_id" INTEGER REFERENCES "Employee" ("id") ON DELETE RESTRICT,
-  "dormitory_id" INTEGER REFERENCES "Dormitory" ("id") ON DELETE RESTRICT,
-  "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT,
-  "room_id" INTEGER REFERENCES "Room" ("id") ON DELETE RESTRICT
+  "employee_id" INTEGER REFERENCES "Employees" ("id") ON DELETE RESTRICT,
+  "dormitory_id" INTEGER REFERENCES "Dormitories" ("id") ON DELETE RESTRICT,
+  "student_id" INTEGER REFERENCES "Students" ("id") ON DELETE RESTRICT,
+  "room_id" INTEGER REFERENCES "Rooms" ("id") ON DELETE RESTRICT
 );
 
--- Employment Contract Table
-CREATE TABLE "EmploymentContract" (
+-- EmploymentContracts Table
+CREATE TABLE "EmploymentContracts" (
   "id" SERIAL PRIMARY KEY,
   "hire_date" DATE NOT NULL CHECK (hire_date <= CURRENT_DATE),
   "termination_date" DATE,
@@ -129,25 +129,25 @@ CREATE TABLE "EmploymentContract" (
   "contract_type" VARCHAR,
   "work_hours" INTEGER CHECK (work_hours >= 0),
   "salary" FLOAT CHECK (salary >= 0),
-  "employee_id" INTEGER REFERENCES "Employee" ("id") ON DELETE RESTRICT,
-  "position_id" INTEGER REFERENCES "Position" ("id") ON DELETE RESTRICT,
-  "dormitory_id" INTEGER REFERENCES "Dormitory" ("id") ON DELETE RESTRICT
+  "employee_id" INTEGER REFERENCES "Employees" ("id") ON DELETE RESTRICT,
+  "position_id" INTEGER REFERENCES "Positions" ("id") ON DELETE RESTRICT,
+  "dormitory_id" INTEGER REFERENCES "Dormitories" ("id") ON DELETE RESTRICT
 );
 
--- StudentApplication Table
-CREATE TABLE "StudentApplication" (
+-- StudentApplications Table
+CREATE TABLE "StudentApplications" (
   "id" SERIAL PRIMARY KEY,
   "submission_date" DATE NOT NULL CHECK (submission_date <= CURRENT_DATE),
   "status" student_application_status DEFAULT 'registered',
   "income" FLOAT CHECK (income >= 0),
-  "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
+  "student_id" INTEGER REFERENCES "Students" ("id") ON DELETE RESTRICT
 );
 
--- Payment Table
-CREATE TABLE "Payment" (
+-- Payments Table
+CREATE TABLE "Payments" (
   "id" SERIAL PRIMARY KEY,
   "value" FLOAT NOT NULL CHECK (value > 0),
   "type" VARCHAR,
   "status" payment_status DEFAULT 'pending',
-  "student_id" INTEGER REFERENCES "Student" ("id") ON DELETE RESTRICT
+  "student_id" INTEGER REFERENCES "Students" ("id") ON DELETE RESTRICT
 );
