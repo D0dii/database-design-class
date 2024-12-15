@@ -1,4 +1,5 @@
 -- SCHEMA: average price of rental in each year
+EXPLAIN
 SELECT
 EXTRACT(YEAR FROM ra.contract_date) as year,
 AVG(ra.payment) as price

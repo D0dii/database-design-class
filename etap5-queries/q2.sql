@@ -5,10 +5,10 @@ SELECT
 FROM 
     "Rooms" r
 LEFT JOIN 
-    "RentalAgreements" ra ON r.id = ra.room_id AND r.room_status = 'avaiable'
+    "RentalAgreements" ra ON r.id = ra.room_id AND ra.termination_date > now()
 WHERE 
-    r.dormitory_id = 1
+    r.dormitory_id = 1 and r.room_status  = 'available'
 GROUP BY 
-    r.id
+    r.id, r.room_status 
 ORDER BY 
-    r.number;
+    r."number" ;

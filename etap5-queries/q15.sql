@@ -4,7 +4,8 @@ e.first_name,
 e.last_name,
 e.pesel,
 e.phone_number,
-dorm.name
+e.email,
+dorm.name AS dormitory
 FROM
 "EmploymentContracts" ec
 INNER JOIN
