@@ -1,7 +1,8 @@
 -- available rooms in a given dormitory and the number of available places
 SELECT 
     r.number AS room_number,
-	r.max_capacity - COUNT(ra.id) AS available_spots
+	r.max_capacity - COUNT(ra.id) AS available_spots,
+    COUNT(ra.id) AS occupied_spots
 FROM 
     "Rooms" r
 LEFT JOIN 
