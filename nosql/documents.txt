@@ -1,0 +1,57 @@
+Student
+{
+  "_id": ObjectId(),
+  "last_name": string,
+  "first_name": string,
+  "pesel": string,
+  "date_of_birth": ISODate("YYYY-MM-DD"),
+  "address": string,
+  "gender": "male" | "female",
+  "student_number": string,
+  "status": "active" | "inactive",
+  "email": string,
+  "password": string,
+  "phone_number": string
+}
+
+Student_payments
+{
+  "_id": ObjectId(),
+  "value": float,
+  "type": string,
+  "status": string,
+  "student_name": string,
+  "student_surname": string,
+  "student_email": string,
+  "student_phone_number": string,
+}
+
+Student_applications
+{
+  "_id": ObjectId(),
+  "submission_date": ISODate("YYYY-MM-DD"),
+  "status": string,
+  "student_name": string,
+  "student_surname": string,
+  "student_email": string,
+  "student_phone_number": string,
+  "student_income": float
+}
+
+Rental_agreement
+{
+  "_id": ObjectId(),
+  "contract_date": ISODate("YYYY-MM-DD"),
+  "termination_date": ISODate("YYYY-MM-DD"),
+  "payment": NumberFloat(0.0),
+  "employee_name": string,
+  "employee_surname": string,
+  "employee_phone_number": string,
+  "dormitory_name": string,
+  "student_name": string,
+  "student_surname": string,
+  "student_email": string,
+  "student_phone_number": string,
+  "room_number": number
+}
+
