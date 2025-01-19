@@ -38,6 +38,27 @@ Student_applications
   "student_income": float
 }
 
+Fault_report
+{
+  "_id": ObjectId(),
+  "report_date": ISODate("YYYY-MM-DD"),
+  "status": string,
+  "student_name": string,
+  "student_surname": string,
+  "student_email": string,
+  "student_phone_number": string,
+  "equipment_id": string,
+}
+
+Equipment
+{
+  "_id": ObjectId(),
+  "buy_date": ISODate("YYYY-MM-DD"),
+  "condition": string,
+  "category": string,
+  "room_number": number
+}
+
 Rental_agreement
 {
   "_id": ObjectId(),
@@ -55,3 +76,19 @@ Rental_agreement
   "room_number": number
 }
 
+Room
+{
+  "_id": ObjectId(),
+  "number": number,
+  "max_capacity": number,
+  "status": string,
+  "dormitory_name": string
+}
+
+Dormitory
+{
+  "_id": ObjectId(),
+  "name": string,
+  "address": string,
+  "regulation": string
+}
