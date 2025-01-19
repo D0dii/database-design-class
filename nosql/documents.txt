@@ -92,3 +92,43 @@ Dormitory
   "address": string,
   "regulation": string
 }
+
+Parking
+{
+  "_id": ObjectId(),
+  "address": string,
+  "spots": number,
+  "dormitory_name": string
+}
+
+Employee
+{
+  "name": string,
+  "surname": string,
+  "pesel": string,
+  "date_of_birth": ISODate("YYYY-MM-DD"),
+  "residental_address": string,
+  "sex": string,
+  "email": string,
+  "password": string,
+  "phone_number": string
+}
+
+Employee_contract
+{
+  "_id": ObjectId(),
+  "date_of_employment": ISODate("YYYY-MM-DD"),
+  "date_of_termination": ISODate("YYYY-MM-DD"),
+  "duration": string,
+  "type_of_contract": string,
+  "number_of_hours": number,
+  "salary": float,
+  "employee_name": string,
+  "employee_surname": string,
+  "employee_phone_number": string,
+  "employee_email": string,
+  "employee_pesel": string,
+  "position": string,
+  "duties": string,
+  "dormitory_name": string
+}
