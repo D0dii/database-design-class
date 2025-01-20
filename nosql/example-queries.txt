@@ -1,0 +1,60 @@
+// 1. Wyszukiwanie wszystkich studentów
+db.Student.find({})
+
+// 2. Wyszukiwanie studenta po numerze PESEL
+db.Student.find({ pesel: "12345678901" })
+
+// 3. Wyszukiwanie aktywnych studentów
+db.Student.find({ status: "active" })
+
+// 4. Wyszukiwanie płatności studenta według adresu e-mail
+db.Student_payments.find({ student_email: "student@example.com" })
+
+// 5. Wyszukiwanie aplikacji studenta złożonych w określonym okresie
+db.Student_applications.find({
+  submission_date: {
+    $gte: ISODate("2023-01-01"),
+    $lte: ISODate("2023-12-31")
+  }
+})
+
+// 6. Zliczanie liczby zgłoszeń usterek dla konkretnego studenta
+db.Fault_report.aggregate([
+  { $match: { student_email: "student@example.com" } },
+  { $count: "total_fault_reports" }
+])
+
+// 7. Wyszukiwanie sprzętu w określonym stanie (np. "dobry")
+db.Equipment.find({ condition: "dobry" })
+
+// 8. Wyszukiwanie umów najmu dla konkretnego studenta
+db.Rental_agreement.find({ student_email: "student@example.com" })
+
+// 9. Wyszukiwanie pokoi w danym akademiku z maksymalną pojemnością
+db.Room.find({ dormitory_name: "Akademik A", max_capacity: { $gt: 2 } })
+
+// 10. Aktualizacja statusu studenta na "inactive"
+db.Student.updateOne(
+  { pesel: "12345678901" },
+  { $set: { status: "inactive" } }
+)
+
+// 11. Dodawanie nowej płatności dla studenta
+db.Student_payments.insertOne({
+  value: 100.0,
+  type: "tuition",
+  status: "completed",
+  student_name: "Jan",
+  student_surname: "Kowalski",
+  student_email: "jan.kowalski@example.com",
+  student_phone_number: "+48123456789"
+})
+
+// 12. Usuwanie zgłoszenia usterki
+db.Fault_report.deleteOne({ _id: ObjectId("60c72b2f9b1e8b001c8e4f1a") })
+
+// 13. Agregacja danych o wynagrodzeniach pracowników w danym akademiku
+db.Employee_contract.aggregate([
+  { $match: { dormitory_name: "Akademik A" } },
+  { $group: { _id: null, total_salary: { $sum: "$salary" } } }
+])
