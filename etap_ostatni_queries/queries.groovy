@@ -99,6 +99,46 @@ q14_all_pending_fault_requests
   }
 ]
 
+q7_number of fault_reports for each equipment ordered descending
+
+[
+  {
+    "$group": {
+      "_id": "$equipment.serial_number",
+      "count": { "$sum": 1 }
+    }
+  },
+  {
+    "$sort": { "count": -1 }
+  }
+]
+
+number of fault_reports for each student ordered descending and thier data
+
+
+[
+  {
+    "$group": {
+      "_id": {
+        "first_name": "$student.first_name",
+        "last_name": "$student.last_name",
+        "email": "$student.email",
+      },
+      "count": {
+        "$sum": 1
+      },
+    }
+  },
+  {
+    "$sort": {
+      "count": -1
+    }
+  }
+]
+
+
+
+
 rental_agreements:
 q13_students_whose_contracts_end_in_2025_and_have_already_submitted_another
 
@@ -299,6 +339,43 @@ q20_new_students_in_each_month_in_each_room
   }
 ]
 
+current dormitory and room number of each student
+
+[
+  {
+    $project: {
+      _id: 0,
+      "student.first_name": 1,
+      "student.last_name": 1,
+      "dormitory.name": 1,
+      room_number: 1
+    }
+  }
+]
+
+q6_residence history of a given student 
+
+[
+  {
+    "$match": {
+      "student.email": "Thomas_Renner28@gmail.com"
+    }
+  },
+  {
+    "$project": {
+      "_id": 0,
+      "start_date": 1,
+      "end_date": 1,
+      "dormitory_name": "$dormitory.name",
+      "room_number": 1,
+      "monthly_rent": 1
+    }
+  }
+]
+
+
+
+
 Rooms:
 q21_total_free_spots_in_each_dormitory
 
@@ -385,3 +462,53 @@ q21_total_free_spots_in_each_dormitory
   }
 ]
 
+Student_payments:
+
+q1_all_students_with_overdue_payments_ane_their_value
+
+
+[
+  {
+    $match: {
+      status: "overdue"
+    }
+  },
+  {
+    $group: {
+      _id: "$student.email",
+      total_amount: {
+        $sum: "$amount"
+      },
+      student: {
+        $first: "$student"
+      }
+    }
+  },
+  {
+    $project: {
+      _id: 0,
+      email: "$_id",
+      first_name: "$student.first_name",
+      last_name: "$student.last_name",
+      total_amount: 1
+    }
+  }
+]
+
+
+student_applications:
+
+q4 students applications with pending status ordered by student_income
+
+[
+  {
+    $match: {
+      status: "pending"
+    }
+  },
+  {
+    $sort: {
+      "student.student_income": 1
+    }
+  }
+]
